@@ -8,3 +8,4 @@ def abs_path_from_project(relative_path: str):
         .absolute()
         .__str__()
     )
+

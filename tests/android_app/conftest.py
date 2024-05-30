@@ -4,7 +4,6 @@ import allure
 import pytest
 from selene import browser
 from appium import webdriver
-from selene_in_action import utils
 from selene_in_action.utils import allure as allure_utils
 from dotenv import load_dotenv
 
