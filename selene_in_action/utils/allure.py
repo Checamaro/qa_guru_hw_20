@@ -4,6 +4,7 @@ from selene import browser
 from config import config
 
 def attach_bstack_video(session_id):
+    from config import config
     bstack_session = requests.get(
         f'https://api.browserstack.com/app-automate/sessions/{session_id}.json',
         auth=(config.userName, config.accessKey),

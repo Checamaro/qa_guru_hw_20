@@ -2,12 +2,13 @@ import os
 from dotenv import load_dotenv
 from appium.options.android import UiAutomator2Options
 from selene_in_action import utils
+from selene_in_action.utils.file import abs_path_from_project
 
 
 class AppConfig:
     def __init__(self):
         # Загружаем переменные окружения из файла .env
-        load_dotenv(dotenv_path=utils.file.abs_path_from_project('.env'))
+        load_dotenv(dotenv_path=abs_path_from_project('.env'))
 
         # Инициализируем переменные окружения
         self.remote_url = os.getenv('REMOTE_URL')
