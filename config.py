@@ -15,7 +15,6 @@ class Config(BaseModel):
     app_bstack: str = os.getenv('APP')
     platformName: str = os.getenv('PLATFORM_NAME')
     platformVersion: str = os.getenv('PLATFORM_VERSION')
-    load_dotenv(dotenv_path=utils.file.abs_path_from_project('.env.credentials'))
     userName: str = os.getenv('USER_NAME')
     accessKey: str = os.getenv('ACCESS_KEY')
 
