@@ -4,7 +4,7 @@ import allure
 import pytest
 from selene import browser
 from appium import webdriver
-from selene_in_action.utils import allure as allure_utils
+from selene_in_action import utils
 from dotenv import load_dotenv
 
 
@@ -18,9 +18,8 @@ def pytest_addoption(parser):
 
 def pytest_configure(config):
     context = config.getoption('--context')
-    current_dir = Path(__file__).parent.parent
-    env_file = os.path.join(current_dir, f'.env.{context}')
-    load_dotenv(env_file)
+    env_file = f'.env.{context}'
+    load_dotenv(dotenv_path=env_file)
 
 
 @pytest.fixture
@@ -29,30 +28,28 @@ def context(request):
 
 
 @pytest.fixture(scope='function', autouse=True)
-def mobile_management(context):
+def android_mobile_management(context):
     from config import config
     options = config.to_driver_options(context=context)
 
-    with allure.step('init app session'):
+    with allure.step('setup app session'):
         browser.config.driver = webdriver.Remote(
-            config.remote_url,
+            options.get_capability('remote_url'),
             options=options
         )
 
-    browser.config.timeout = float(os.getenv('timeout', '10.0'))
+    browser.config.timeout = 10.0
 
     yield
 
-    allure.attach(
-        browser.driver.get_screenshot_as_png(),
-        name='screenshot',
-        attachment_type=allure.attachment_type.PNG,
-    )
+    utils.allure_attach.screenshot()
+
+    utils.allure_attach.page_source_xml()
 
     session_id = browser.driver.session_id
 
-    with allure.step('tear down app session with id:' + session_id):
+    with allure.step('tear down app session with id' + session_id):
         browser.quit()
 
     if context == 'bstack':
-        allure_utils.attach_bstack_video(session_id)
+        utils.allure_attach.bstack_video(session_id)
