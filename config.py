@@ -17,8 +17,9 @@ class Config(BaseModel):
     platformVersion: str = os.getenv('PLATFORM_VERSION')
     userName: str = os.getenv('USER_NAME')
     accessKey: str = os.getenv('ACCESS_KEY')
-    udid_emulator: str = os.getenv('UDID')
-    udid_real: str = os.getenv('UDID')
+    udid: str = os.getenv('UDID')
+
+
 
     def to_driver_options(self, context):
         options = UiAutomator2Options()
@@ -27,13 +28,13 @@ class Config(BaseModel):
             options.set_capability('remote_url', self.remote_url)
             options.set_capability('appWaitActivity', self.appWaitActivity)
             options.set_capability('app', self.app_local)
-            options.set_capability('udid_emulator', self.udid_emulator)
+            options.set_capability('udid', self.udid)
 
         if context == 'real_local':
             options.set_capability('remote_url', self.remote_url)
             options.set_capability('appWaitActivity', self.appWaitActivity)
             options.set_capability('app', self.app_local)
-            options.set_capability('udid_real', self.udid_real)
+            options.set_capability('udid', self.udid)
 
         if context == 'bstack':
             options.set_capability('remote_url', self.remote_url)
